@@ -8,9 +8,9 @@
 
     <resource-bundle>messages.AdrBundle</resource-bundle>
 
-<!--    <extensions defaultExtensionNs="com.intellij">-->
-<!--        <toolWindow factoryClass="com.github.thermoweb.adr.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>-->
-<!--    </extensions>-->
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow factoryClass="com.github.thermoweb.adr.AdrToolWindowFactory" id="ADR Manager"/>
+    </extensions>
 
 <!--    <applicationListeners>-->
 <!--        <listener class="com.github.thermoweb.adr.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>-->
