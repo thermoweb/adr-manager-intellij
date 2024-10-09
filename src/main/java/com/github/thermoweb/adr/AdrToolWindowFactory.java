@@ -8,6 +8,9 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -27,6 +30,14 @@ public class AdrToolWindowFactory implements ToolWindowFactory {
         AdrService service = toolWindow.getProject().getService(AdrService.class);
 
         JPanel panel = new JPanel(new BorderLayout());
+        // toolbar
+        DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.add(new CreateAdrAction());
+        ActionToolbar adrToolWindow = ActionManager.getInstance().createActionToolbar("AdrToolWindow", actionGroup, true);
+        adrToolWindow.setTargetComponent(panel);
+        panel.add(adrToolWindow.getComponent(), BorderLayout.NORTH);
+
+        // adr table
         List<Adr> adrs = service.getAdrs();
         JBScrollPane panelFromAdrs = createPanelFromAdrs(adrs);
         panel.add(panelFromAdrs, BorderLayout.CENTER);
