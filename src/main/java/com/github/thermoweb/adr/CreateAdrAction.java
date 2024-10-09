@@ -13,11 +13,15 @@ import javax.swing.JOptionPane;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.icons.AllIcons;
+import com.intellij.notification.NotificationGroupManager;
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.vfs.VirtualFileManager;
+import com.intellij.openapi.wm.ToolWindowManager;
 
 public class CreateAdrAction extends AnAction {
     public static final Logger log = Logger.getInstance(CreateAdrAction.class);
@@ -44,6 +48,11 @@ public class CreateAdrAction extends AnAction {
     private void generateAdrFile(Project project, String adrTitle) {
         try {
             copyTemplate(project, adrTitle);
+            ToolWindowManager.getInstance(project).notifyByBalloon("ADR Manager", MessageType.INFO, "ADR created!");
+            NotificationGroupManager.getInstance()
+                    .getNotificationGroup("adr info")
+                    .createNotification("ADR manager", "N'oublie pas tes imputations !!!", NotificationType.WARNING)
+                    .notify(project);
         } catch (IOException e) {
             log.error("an error occurred.", e);
             throw new RuntimeException(e);
