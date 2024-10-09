@@ -19,21 +19,19 @@ import com.intellij.ui.table.JBTable;
 public class AdrToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        Content content = ContentFactory.getInstance().createContent(getPanel(), "", false);
+        Content content = ContentFactory.getInstance().createContent(getPanel(toolWindow), "", false);
         toolWindow.getContentManager().addContent(content);
     }
 
-    private static JPanel getPanel() {
+    private static JPanel getPanel(ToolWindow toolWindow) {
+        AdrService service = toolWindow.getProject().getService(AdrService.class);
+
         JPanel panel = new JPanel(new BorderLayout());
-        List<Adr> adrs = getAdrs();
+        List<Adr> adrs = service.getAdrs();
         JBScrollPane panelFromAdrs = createPanelFromAdrs(adrs);
         panel.add(panelFromAdrs, BorderLayout.CENTER);
 
         return panel;
-    }
-
-    private static List<Adr> getAdrs() {
-        return List.of(new Adr("20241009", "my first fake adr !"), new Adr("20240101", "my older adr"));
     }
 
     private static JBScrollPane createPanelFromAdrs(List<Adr> adrs) {
