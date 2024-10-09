@@ -38,7 +38,10 @@ public class AdrToolWindowFactory implements ToolWindowFactory {
 
     private static JBScrollPane createPanelFromAdrs(List<Adr> adrs) {
         JBTable adrTable = new JBTable();
-        DefaultTableModel defaultTableModel = new DefaultTableModel(new Object[]{"Id", "Title"}, 0);
+        DefaultTableModel defaultTableModel = new DefaultTableModel(new Object[]{
+                AdrBundle.message("adrColumnIdName"),
+                AdrBundle.message("adrColumnTitleName")},
+                0);
         adrs.forEach(adr -> defaultTableModel.addRow(new Object[]{adr.id(), adr.title()}));
         adrTable.setModel(defaultTableModel);
         return new JBScrollPane(adrTable);
