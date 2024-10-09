@@ -22,7 +22,7 @@ public final class AdrService {
 
     public List<Adr> getAdrs() {
         return listFilesIn(project).stream()
-                .map(adrFile -> new Adr(adrFile.getName(), adrFile.getName()))
+                .map(AdrService::fromVirtualFile)
                 .toList();
     }
 
@@ -35,9 +35,18 @@ public final class AdrService {
         if (projectDir != null && projectDir.isDirectory()) {
             return Arrays.stream(projectDir.getChildren())
                     .filter(f -> f.getName().endsWith(".md"))
+                    .filter(f -> !f.getName().equalsIgnoreCase("readme.md"))
+                    .filter(f -> !f.getName().equalsIgnoreCase("template.md"))
+                    .filter(f -> !f.getName().equalsIgnoreCase("index.md"))
                     .filter(f -> !f.isDirectory())
                     .toList();
         }
         return Collections.emptyList();
+    }
+
+    private static Adr fromVirtualFile(VirtualFile virtualFile) {
+        String[] motifs = virtualFile.getName().split("-");
+        String title = String.join(" ", Arrays.asList(motifs).subList(1, motifs.length)).replace(".md", "");
+        return new Adr(motifs[0], title);
     }
 }
