@@ -11,6 +11,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.thermoweb.adr.AdrToolWindowFactory" id="ADR Manager"/>
         <notificationGroup id="adr info" displayType="BALLOON"/>
+        <annotator implementationClass="com.github.thermoweb.adr.AdrAnnotator" language=""/>
     </extensions>
 
 <!--    <applicationListeners>-->
