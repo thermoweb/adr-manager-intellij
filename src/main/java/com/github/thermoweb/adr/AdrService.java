@@ -1,8 +1,14 @@
 package com.github.thermoweb.adr;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.diagnostic.Logger;
@@ -15,15 +21,26 @@ public final class AdrService {
     public static final Logger log = Logger.getInstance(AdrService.class);
 
     public final Project project;
+    private final ConcurrentHashMap<String, Adr> adrCache = new ConcurrentHashMap<>();
 
     public AdrService(Project project) {
         this.project = project;
     }
 
     public List<Adr> getAdrs() {
-        return listFilesIn(project).stream()
+        Map<String, Adr> adrs = listFilesIn(project).stream()
                 .map(AdrService::fromVirtualFile)
-                .toList();
+                .collect(Collectors.toMap(Adr::id, Function.identity(), (existingValue, newValue) -> newValue));
+        adrCache.clear();
+        adrCache.putAll(adrs);
+        return new ArrayList<>(adrs.values());
+    }
+
+    public Optional<Adr> getAdrFromId(String id) {
+        if (adrCache.isEmpty()) {
+            log.warn("Cache is empty!");
+        }
+        return Optional.ofNullable(adrCache.get(id));
     }
 
     private List<VirtualFile> listFilesIn(Project project) {
