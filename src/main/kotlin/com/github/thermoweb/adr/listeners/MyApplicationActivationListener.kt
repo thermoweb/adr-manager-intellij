@@ -1,4 +1,4 @@
-package com.github.thermoweb.adrmanagerintellij.listeners
+package com.github.thermoweb.adr.listeners
 
 import com.intellij.openapi.application.ApplicationActivationListener
 import com.intellij.openapi.diagnostic.thisLogger

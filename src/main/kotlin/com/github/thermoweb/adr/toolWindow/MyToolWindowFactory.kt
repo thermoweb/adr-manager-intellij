@@ -1,4 +1,4 @@
-package com.github.thermoweb.adrmanagerintellij.toolWindow
+package com.github.thermoweb.adr.toolWindow
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
@@ -8,8 +8,8 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.github.thermoweb.adrmanagerintellij.MyBundle
-import com.github.thermoweb.adrmanagerintellij.services.MyProjectService
+import com.github.thermoweb.adr.MyBundle
+import com.github.thermoweb.adr.services.MyProjectService
 import javax.swing.JButton
 
 

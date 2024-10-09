@@ -1,4 +1,4 @@
-package com.github.thermoweb.adrmanagerintellij
+package com.github.thermoweb.adr
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

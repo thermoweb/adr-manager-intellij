@@ -1,9 +1,9 @@
-package com.github.thermoweb.adrmanagerintellij.services
+package com.github.thermoweb.adr.services
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.thermoweb.adrmanagerintellij.MyBundle
+import com.github.thermoweb.adr.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {
