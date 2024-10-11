@@ -64,6 +64,6 @@ public final class AdrService {
     private static Adr fromVirtualFile(VirtualFile virtualFile) {
         String[] motifs = virtualFile.getName().split("-");
         String title = String.join(" ", Arrays.asList(motifs).subList(1, motifs.length)).replace(".md", "");
-        return new Adr(motifs[0], title);
+        return new Adr(motifs[0], title, virtualFile);
     }
 }

@@ -1,4 +1,6 @@
 package com.github.thermoweb.adr;
 
-public record Adr(String id, String title) {
+import com.intellij.openapi.vfs.VirtualFile;
+
+public record Adr(String id, String title, VirtualFile file) {
 }

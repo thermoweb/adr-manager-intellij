@@ -5,6 +5,7 @@
     <vendor>thermoweb</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
 
     <resource-bundle>messages.AdrBundle</resource-bundle>
 
@@ -13,6 +14,7 @@
         <notificationGroup id="adr info" displayType="BALLOON"/>
         <annotator implementationClass="com.github.thermoweb.adr.AdrAnnotator" language=""/>
         <codeInsight.lineMarkerProvider implementationClass="com.github.thermoweb.adr.AdrLineMarkerProvider" language=""/>
+        <psi.referenceContributor implementation="com.github.thermoweb.adr.AdrReferenceContributor" language=""/>
     </extensions>
 
 <!--    <applicationListeners>-->
