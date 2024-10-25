@@ -25,20 +25,24 @@ public class AdrReferenceContributor extends PsiReferenceContributor {
     }
 
     private static class AdrReferenceProvider extends PsiReferenceProvider {
-        private static final Pattern PATTERN = Pattern.compile("#ADR-(\\d+)");
+        private static final Pattern PATTERN = Pattern.compile("#ADR-([\\w\\-]+)");
 
         @Override
         public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
             List<PsiReference> references = new ArrayList<>();
             String text = psiElement.getText();
             Matcher matcher = PATTERN.matcher(text);
+            AdrService service = psiElement.getProject().getService(AdrService.class);
 
             while (matcher.find()) {
                 int start = matcher.start();
                 int end = matcher.end();
                 String adrId = matcher.group(1);
-                TextRange rangeInElement = new TextRange(start, end).shiftRight(psiElement.getTextRange().getStartOffset() - psiElement.getTextOffset());
-                references.add(new AdrReference(psiElement, rangeInElement, adrId));
+                service.getAdrFromId(adrId)
+                        .ifPresent(adr -> {
+                            TextRange rangeInElement = new TextRange(start, end).shiftRight(psiElement.getTextRange().getStartOffset() - psiElement.getTextOffset());
+                            references.add(new AdrReference(psiElement, rangeInElement, adrId));
+                        });
             }
             return references.toArray(PsiReference.EMPTY_ARRAY);
         }

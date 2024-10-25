@@ -29,7 +29,7 @@ public final class AdrService {
 
     public List<Adr> getAdrs() {
         Map<String, Adr> adrs = listFilesIn(project).stream()
-                .map(AdrService::fromVirtualFile)
+                .map(Adr::fromVirtualFile)
                 .collect(Collectors.toMap(Adr::id, Function.identity(), (existingValue, newValue) -> newValue));
         adrCache.clear();
         adrCache.putAll(adrs);
@@ -38,9 +38,25 @@ public final class AdrService {
 
     public Optional<Adr> getAdrFromId(String id) {
         if (adrCache.isEmpty()) {
-            log.warn("Cache is empty!");
+            log.warn("ADRs cache was empty!");
+            getAdrs();
         }
-        return Optional.ofNullable(adrCache.get(id));
+        Adr adrById = adrCache.get(id);
+        if (adrById != null) {
+            return Optional.of(adrById);
+        }
+        return findOneById(id);
+    }
+
+    private Optional<Adr> findOneById(String id) {
+        List<Adr> adrs = adrCache.values()
+                .stream()
+                .filter(adr -> adr.id().startsWith(id))
+                .toList();
+        if (adrs.size() != 1) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(adrs.get(0));
     }
 
     private List<VirtualFile> listFilesIn(Project project) {
@@ -48,7 +64,7 @@ public final class AdrService {
             log.error("Project path is null");
             return Collections.emptyList();
         }
-        VirtualFile projectDir = LocalFileSystem.getInstance().findFileByPath(project.getBasePath() + "/docs/adr");
+        VirtualFile projectDir = LocalFileSystem.getInstance().findFileByPath(project.getBasePath() + "/docs/adr"); //FIXME: make this configurable
         if (projectDir != null && projectDir.isDirectory()) {
             return Arrays.stream(projectDir.getChildren())
                     .filter(f -> f.getName().endsWith(".md"))
@@ -59,11 +75,5 @@ public final class AdrService {
                     .toList();
         }
         return Collections.emptyList();
-    }
-
-    private static Adr fromVirtualFile(VirtualFile virtualFile) {
-        String[] motifs = virtualFile.getName().split("-");
-        String title = String.join(" ", Arrays.asList(motifs).subList(1, motifs.length)).replace(".md", "");
-        return new Adr(motifs[0], title, virtualFile);
     }
 }

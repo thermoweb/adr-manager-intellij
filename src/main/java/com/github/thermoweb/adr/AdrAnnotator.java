@@ -19,7 +19,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.ui.JBColor;
 
 public class AdrAnnotator implements Annotator {
-    public static final Pattern ADR_PATTERN = Pattern.compile("#ADR-(\\w+)");
+    public static final Pattern ADR_PATTERN = Pattern.compile("#ADR-([\\w\\-]+)");
 
     public AdrAnnotator() {
         AdrTextAttribute.initializeTextAttributes();
@@ -29,15 +29,21 @@ public class AdrAnnotator implements Annotator {
     public void annotate(@NotNull PsiElement psiElement, @NotNull AnnotationHolder annotationHolder) {
         if (psiElement instanceof PsiComment comment) {
             Matcher matcher = ADR_PATTERN.matcher(comment.getText());
+            AdrService adrService = comment.getProject().getService(AdrService.class);
 
             while (matcher.find()) {
                 String adrValue = matcher.group(1);
-                TextRange adrIdRange = TextRange.from(comment.getTextRange().getStartOffset() + matcher.start(),
-                        matcher.end() - matcher.start());
-                annotationHolder.newAnnotation(HighlightSeverity.INFORMATION, "ADR reference: " + adrValue)
-                        .range(adrIdRange)
-                        .textAttributes(AdrTextAttribute.ADR_REFERENCE_KEY)
-                        .create();            }
+                adrService.getAdrFromId(adrValue)
+                        .ifPresent(adr -> {
+                            TextRange adrIdRange = TextRange.from(
+                                    comment.getTextRange().getStartOffset() + matcher.start(),
+                                    matcher.end() - matcher.start());
+                            annotationHolder.newAnnotation(HighlightSeverity.INFORMATION, "ADR reference: " + adrValue)
+                                    .range(adrIdRange)
+                                    .textAttributes(AdrTextAttribute.ADR_REFERENCE_KEY)
+                                    .create();
+                        });
+            }
         }
     }
 

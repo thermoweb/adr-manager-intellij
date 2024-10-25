@@ -51,7 +51,7 @@ public class AdrToolWindowFactory implements ToolWindowFactory {
                 AdrBundle.message("adrColumnIdName"),
                 AdrBundle.message("adrColumnTitleName")},
                 0);
-        adrs.forEach(adr -> defaultTableModel.addRow(new Object[]{adr.id(), adr.title()}));
+        adrs.forEach(adr -> defaultTableModel.addRow(new Object[]{adr.shortId(), adr.title()}));
         adrTable.setModel(defaultTableModel);
         return new JBScrollPane(adrTable);
     }
