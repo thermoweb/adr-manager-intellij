@@ -17,7 +17,4 @@
         <psi.referenceContributor implementation="com.github.thermoweb.adr.AdrReferenceContributor" language=""/>
     </extensions>
 
-<!--    <applicationListeners>-->
-<!--        <listener class="com.github.thermoweb.adr.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>-->
-<!--    </applicationListeners>-->
 </idea-plugin>
