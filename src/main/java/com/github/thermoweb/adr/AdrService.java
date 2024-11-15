@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -36,16 +38,32 @@ public final class AdrService {
         return new ArrayList<>(adrs.values());
     }
 
+    public List<Adr> findAdrs(String text) {
+        loadCache();
+        return adrCache.values()
+                .stream()
+                .filter(entry -> entry.id().contains(text))
+                .toList();
+    }
+
     public Optional<Adr> getAdrFromId(String id) {
-        if (adrCache.isEmpty()) {
-            log.warn("ADRs cache was empty!");
-            getAdrs();
-        }
+        loadCache();
         Adr adrById = adrCache.get(id);
         if (adrById != null) {
             return Optional.of(adrById);
         }
         return findOneById(id);
+    }
+
+    private void loadCache() {
+        if (adrCache.isEmpty()) {
+            log.warn("ADRs cache was empty!");
+            getAdrs();
+        }
+    }
+
+    public static AdrService getInstance(@NotNull Project project) {
+        return project.getService(AdrService.class);
     }
 
     private Optional<Adr> findOneById(String id) {

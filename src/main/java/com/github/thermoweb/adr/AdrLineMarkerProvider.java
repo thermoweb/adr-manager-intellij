@@ -39,7 +39,7 @@ public class AdrLineMarkerProvider implements LineMarkerProvider {
     private Optional<Adr> findAdrIfAny(PsiComment element) {
         Matcher matcher = ADR_PATTERN.matcher(element.getText());
         if (matcher.find()) {
-            AdrService service = element.getProject().getService(AdrService.class);
+            AdrService service = AdrService.getInstance(element.getProject());
             return service.getAdrFromId(matcher.group(1));
         }
 

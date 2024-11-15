@@ -32,7 +32,7 @@ public class AdrReferenceContributor extends PsiReferenceContributor {
             List<PsiReference> references = new ArrayList<>();
             String text = psiElement.getText();
             Matcher matcher = PATTERN.matcher(text);
-            AdrService service = psiElement.getProject().getService(AdrService.class);
+            AdrService service = AdrService.getInstance(psiElement.getProject());
 
             while (matcher.find()) {
                 int start = matcher.start();

@@ -10,11 +10,12 @@
     <resource-bundle>messages.AdrBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.thermoweb.adr.AdrToolWindowFactory" id="ADR Manager"/>
+        <toolWindow factoryClass="com.github.thermoweb.adr.AdrToolWindowFactory" anchor="bottom" id="ADR Manager" icon="AllIcons.Toolwindows.Documentation"/>
         <notificationGroup id="adr info" displayType="BALLOON"/>
         <annotator implementationClass="com.github.thermoweb.adr.AdrAnnotator" language=""/>
         <codeInsight.lineMarkerProvider implementationClass="com.github.thermoweb.adr.AdrLineMarkerProvider" language=""/>
         <psi.referenceContributor implementation="com.github.thermoweb.adr.AdrReferenceContributor" language=""/>
+        <completion.contributor language="any" order="first" implementationClass="com.github.thermoweb.adr.AdrCompletionContributor"/>
     </extensions>
 
 </idea-plugin>

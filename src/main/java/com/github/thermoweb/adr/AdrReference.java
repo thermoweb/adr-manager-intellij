@@ -19,7 +19,7 @@ public class AdrReference extends PsiReferenceBase<PsiElement> {
     @Override
     public @Nullable PsiElement resolve() {
         Project project = myElement.getProject();
-        return project.getService(AdrService.class)
+        return AdrService.getInstance(project)
                 .getAdrFromId(adrId)
                 .map(Adr::file)
                 .map(adrFile -> PsiManager.getInstance(project).findFile(adrFile))

@@ -29,7 +29,7 @@ public class AdrAnnotator implements Annotator {
     public void annotate(@NotNull PsiElement psiElement, @NotNull AnnotationHolder annotationHolder) {
         if (psiElement instanceof PsiComment comment) {
             Matcher matcher = ADR_PATTERN.matcher(comment.getText());
-            AdrService adrService = comment.getProject().getService(AdrService.class);
+            AdrService adrService = AdrService.getInstance(comment.getProject());
 
             while (matcher.find()) {
                 String adrValue = matcher.group(1);
